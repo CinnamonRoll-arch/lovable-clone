@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: lovable-clone
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/testDB
+    username: postgres
+    password: arnab@123
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+jwt:
+  secret-key: vhdheoidjmxkxnuewdefnwcjwhcuwehdibytdwdowdpcdbchhdshijommkmcwjdidosmxncbygyuwdh
+
+stripe:
+  secret: sk_test_51Tzd7GP8p04SIMjcW5rvfag8F2d8WRdmOObLFbSO2hQ9yf9KGviX8BBDVfQTkRxCLNBAE7X2vCUmIN0oJq4JBOK600MbNQppCS
+
+webhook:
+  secret: whsec_e2a3f2fa89110768e462be8a19e55b4241f59ac1e9daacfb6f18cbdad26e1db8
+
+client.url: http://localhost:8080
