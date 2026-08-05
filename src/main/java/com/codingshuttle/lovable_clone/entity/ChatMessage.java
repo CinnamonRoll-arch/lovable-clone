@@ -1,15 +1,44 @@
 package com.codingshuttle.lovable_clone.entity;
 
 import com.codingshuttle.lovable_clone.enums.MessageRole;
+import jakarta.persistence.*;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
 
+@Entity
+@Table(name = "chat_messages")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ChatMessage {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumns({
+            @JoinColumn(name = "project_id", referencedColumnName = "project_id", nullable = false),
+            @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
+    })
     ChatSession chatSession;
+
+    @Column(columnDefinition = "text", nullable = false)
     String content;
-    String toolCalls; // JSON Array of tools called
-    Integer tokenUsed;
+
+    // String toolCalls; // JSON Array of tools called
+
+    Integer tokenUsed = 0;
+
+    @CreationTimestamp
     Instant createdAt;
-    MessageRole role;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    MessageRole role; // USER,ASSISTANT
 }

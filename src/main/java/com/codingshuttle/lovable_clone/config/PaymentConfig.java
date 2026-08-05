@@ -1,4 +1,4 @@
-package com.codingshuttle.lovable_clone.payment;
+package com.codingshuttle.lovable_clone.config;
 
 import com.stripe.Stripe;
 import jakarta.annotation.PostConstruct;

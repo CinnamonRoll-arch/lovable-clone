@@ -8,6 +8,7 @@ import com.codingshuttle.lovable_clone.entity.ProjectMember;
 import com.codingshuttle.lovable_clone.entity.ProjectMemberId;
 import com.codingshuttle.lovable_clone.entity.User;
 import com.codingshuttle.lovable_clone.enums.ProjectRole;
+import com.codingshuttle.lovable_clone.exception.BadRequestException;
 import com.codingshuttle.lovable_clone.exception.ResourceNotFoundException;
 import com.codingshuttle.lovable_clone.mapper.ProjectMapper;
 import com.codingshuttle.lovable_clone.repository.ProjectMemberRepository;
@@ -15,6 +16,7 @@ import com.codingshuttle.lovable_clone.repository.ProjectRepository;
 import com.codingshuttle.lovable_clone.repository.UserRepository;
 import com.codingshuttle.lovable_clone.security.JwtUtils;
 import com.codingshuttle.lovable_clone.service.ProjectService;
+import com.codingshuttle.lovable_clone.service.SubscriptionService;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +39,7 @@ public class ProjectServiceImpl implements ProjectService {
      ProjectMapper projectMapper;
      ProjectMemberRepository projectMemberRepository;
      JwtUtils jwtUtils;
+     SubscriptionService subscriptionService;
 
     @Override
     public List<ProjectSummaryResponse> getUserProjects() {
@@ -60,6 +63,12 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectResponse createProject(ProjectRequest request) {
+
+        if (subscriptionService.canCreateProject()) {
+            throw new BadRequestException("User is not allowed to create a new project, Upgrade your plan now");
+        }
+
+
         Long userId = jwtUtils.getCurrentUserId();
       //  User owner = userRepository.findById(userId)
       //          .orElseThrow(
@@ -67,7 +76,7 @@ public class ProjectServiceImpl implements ProjectService {
      //
         //        );
 
-        // THIS WILL NOT MAKE A B CALL AND JUST GIVE A REFERENCE
+        // THIS WILL NOT MAKE A DB CALL AND JUST GIVE A REFERENCE
         // OF THE OBJECT INSTEAD OF GIVING THE ENTIRE OBJECT
 
         User owner = userRepository.getReferenceById(userId);

@@ -3,9 +3,9 @@ spring:
     name: lovable-clone
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/testDB
-    username: postgres
-    password: arnab@123
+    url: jdbc:postgresql://localhost:9010/pgvector-test
+    username: user
+    password: password
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -17,6 +17,15 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
 
+  ai:
+    openai:
+      api-key: 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
+      base-url: https://openrouter.ai/api/v1
+      chat:
+        options:
+          model: poolside/laguna-xs-2.1:free
+          temperature: 0.0
+
 jwt:
   secret-key: vhdheoidjmxkxnuewdefnwcjwhcuwehdibytdwdowdpcdbchhdshijommkmcwjdidosmxncbygyuwdh
 
@@ -26,4 +35,15 @@ stripe:
 webhook:
   secret: whsec_e2a3f2fa89110768e462be8a19e55b4241f59ac1e9daacfb6f18cbdad26e1db8
 
-client.url: http://localhost:8080
+client:
+  url: http://localhost:8080
+
+logging:
+  level:
+    org.springframework.ai: DEBUG
+
+  minio:
+    url: http://localhost:9000          # or minio:9000 if inside docker network
+    access-key: minioadmin
+    secret-key: minioadmin123
+    project-bucket: project
